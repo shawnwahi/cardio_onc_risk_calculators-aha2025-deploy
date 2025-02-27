@@ -5,7 +5,7 @@ import ICIForm from "./components/ICIForm";
 function App() {
   const [result, setResult] = useState("");
 
-  // Placeholder for linking to your actual XGBoost model
+  // Placeholder for linking to your actual model
   const handleCalculate = (formData) => {
     // For demonstration only
     setResult("Placeholder result: ~12% risk of ACE based on your inputs");
@@ -16,15 +16,13 @@ function App() {
       <Card>
         <CardContent>
           <Typography variant="h4" gutterBottom>
-            ICI Risk Calculator
+            ACE Risk Calculator
           </Typography>
 
-          {/* Short instructions */}
           <Typography variant="body1" paragraph>
             Please fill in the details below to estimate the chance of developing an ACE event.
           </Typography>
 
-          {/* ACE definition */}
           <Alert severity="info" style={{ marginBottom: "1rem" }}>
             <AlertTitle>Definition: Acute Cardiac Events (ACE)</AlertTitle>
             In this tool, ACE refers to a range of cardiovascular complications observed 

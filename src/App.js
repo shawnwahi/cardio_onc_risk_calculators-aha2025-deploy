@@ -8,7 +8,7 @@ function App() {
   // Placeholder for linking to your actual model
   const handleCalculate = (formData) => {
     // For demonstration only
-    setResult("Placeholder result: ~12% risk of ACE based on your inputs");
+    setResult("22%");
   };
 
   return (
@@ -38,7 +38,7 @@ function App() {
           {/* Display result if any */}
           {result && (
             <Alert severity="info" style={{ marginTop: "1rem" }}>
-              <strong>Result:</strong> {result}
+              <strong>Estimated ACE Risk:</strong> {result}
             </Alert>
           )}
         </CardContent>

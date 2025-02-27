@@ -19,11 +19,11 @@ function App() {
             ACE Risk Calculator
           </Typography>
 
-          <Typography variant="body1" paragraph>
+          {/* <Typography variant="body1" paragraph>
             Please fill in the details below to estimate the chance of developing an ACE event.
-          </Typography>
+          </Typography> */}
 
-          <Alert severity="info" style={{ marginBottom: "1rem" }}>
+          {/* <Alert severity="info" style={{ marginBottom: "1rem" }}>
             <AlertTitle>Definition: Acute Cardiac Events (ACE)</AlertTitle>
             In this tool, ACE refers to a range of cardiovascular complications observed 
             after immune checkpoint inhibitor (ICI) treatment. The composite ACE outcome 
@@ -31,7 +31,7 @@ function App() {
             ventricular arrhythmias, second-degree atrioventricular block, complete heart 
             block, coronary artery disease, congestive heart failure, systolic heart failure, 
             diastolic heart failure, myocardial infarction, mitral valve disease, myocarditis.
-          </Alert>
+          </Alert> */}
 
           <ICIForm onCalculate={handleCalculate} />
 

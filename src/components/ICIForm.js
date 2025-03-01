@@ -42,7 +42,7 @@ function ICIForm({ onCalculate }) {
   const [pvd, setPvd] = useState(false);
   const [cad, setCad] = useState(false);
   const [htn, setHtn] = useState(false);
-  const [lvdge, setLvdge] = useState(false);
+  const [lvlge, setLvlge] = useState(false);
   const [dualIci, setDualIci] = useState(false);
   const [cancerMetastasis, setCancerMetastasis] = useState(false);
 
@@ -94,7 +94,7 @@ function ICIForm({ onCalculate }) {
       pvd,
       cad,
       htn,
-      lvdge,
+      lvlge,
       dualIci,
       cancerMetastasis,
 
@@ -289,14 +289,14 @@ function ICIForm({ onCalculate }) {
           </FormControl>
         </Grid>
 
-        {/* LVDGE */}
+        {/* LV LGE */}
         <Grid item xs={12} sm={6}>
           <FormControl component="fieldset" fullWidth>
-            <FormLabel component="legend">LVDGE</FormLabel>
+            <FormLabel component="legend">LV LGE</FormLabel>
             <RadioGroup
               row
-              value={lvdge ? "yes" : "no"}
-              onChange={(e) => setLvdge(e.target.value === "yes")}
+              value={lvlge ? "yes" : "no"}
+              onChange={(e) => setLvlge(e.target.value === "yes")}
             >
               <FormControlLabel value="yes" control={<Radio />} label="Yes" />
               <FormControlLabel value="no" control={<Radio />} label="No" />

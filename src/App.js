@@ -110,6 +110,16 @@ const handleCalculate = (formData) => {
               <strong>Estimated ACE Risk:</strong> {result}
             </Alert>
           )}
+
+           {/* Footnote */}
+            <Typography 
+              variant="body2" 
+              color="textSecondary" 
+              align="center" 
+              style={{ marginTop: "2rem", fontStyle: "italic" }}
+            >
+              Developed by the Kwan Lab at Yale University
+            </Typography>
         </CardContent>
       </Card>
     </Container>

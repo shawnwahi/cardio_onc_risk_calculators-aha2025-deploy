@@ -1,10 +1,15 @@
 body {
-    background-color: #f8f9fa; /* Light grayish background */
-    font-family: "Helvetica Neue", Arial, sans-serif;
-  }
-  
-  h1,
-  label {
-    color: #333;
-  }
-  
+  background-color: #f8f9fa; /* Light grayish background */
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+h1,
+label {
+  color: #333;
+}
+
+/* Optional: helps ensure the layout fills the viewport nicely */
+#root {
+  min-height: 100vh;
+}

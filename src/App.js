@@ -50,7 +50,13 @@ const PALETTE = {
 };
 
 function App() {
-  const [activeCalc, setActiveCalc] = useState("ici");
+  // ---- default calculator from config ----
+  const validCalcs = ["ici", "tki"];
+  const configDefault =
+    (APP_CONFIG?.defaultCalculator || "ici").toString().toLowerCase();
+  const initialCalc = validCalcs.includes(configDefault) ? configDefault : "ici";
+
+  const [activeCalc, setActiveCalc] = useState(initialCalc);
   const [iciResult, setIciResult] = useState("");
   const [tkiResult, setTkiResult] = useState("");
 
@@ -185,7 +191,7 @@ function App() {
 
           <Accordion sx={{ mt: 2 }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle1" fontWeight="bold">What counts as ACE?</Typography>
+              <Typography variant="subtitle1" fontWeight="bold">ACE Definition</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography variant="body2" color="textSecondary">
@@ -270,7 +276,7 @@ function App() {
 
           <Accordion sx={{ mt: 2 }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle1" fontWeight="bold">What counts as ACE?</Typography>
+              <Typography variant="subtitle1" fontWeight="bold">ACE Definition</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography variant="body2" color="textSecondary">

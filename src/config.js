@@ -4,8 +4,12 @@
 const APP_CONFIG = {
   version: "2.0",
   versionDateMonthYear: "Nov 2025",
+
   // "stable" | "dev"
   buildTier: "dev",
+
+  // "tki" | "ici"
+  defaultCalculator: "tki",
 
   flags: {
     // Show a small "NEW" badge on the TKI item in the sidebar
@@ -14,7 +18,7 @@ const APP_CONFIG = {
 
   // ---- TKI-specific settings ----
   tki: {
-    // If later you confirm the cutoff is 50, just change this to 50
+    // can change cutoff to 50 later, if needed
     lvefAbnormalThreshold: 40
   }
 };

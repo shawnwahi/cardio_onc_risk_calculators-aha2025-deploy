@@ -16,11 +16,16 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-  Chip
+  Chip,
+  IconButton,
+  useMediaQuery
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ScienceIcon from "@mui/icons-material/Science";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ICIForm from "./components/ICIForm";
 import TKIForm from "./components/TKIForm";
 import APP_CONFIG from "./config";
@@ -50,7 +55,10 @@ const PALETTE = {
 };
 
 function App() {
-  // ---- default calculator from config ----
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
+  // default calculator from config (tki | ici)
   const validCalcs = ["ici", "tki"];
   const configDefault =
     (APP_CONFIG?.defaultCalculator || "ici").toString().toLowerCase();
@@ -59,6 +67,10 @@ function App() {
   const [activeCalc, setActiveCalc] = useState(initialCalc);
   const [iciResult, setIciResult] = useState("");
   const [tkiResult, setTkiResult] = useState("");
+
+  // Sidebar visibility states
+  const [desktopOpen, setDesktopOpen] = useState(true); // default open on desktop
+  const [mobileOpen, setMobileOpen] = useState(false);  // default closed on mobile
 
   // ----- ICI calculator (unchanged math) -----
   const handleCalculateICI = (formData) => {
@@ -230,26 +242,26 @@ function App() {
             </Typography>
           </Box>
 
-          <Paper
-            elevation={0}
-            sx={{
-              border: "1px solid",
-              borderColor: PALETTE.green.panelBorder,
-              borderRadius: 2,
-              bgcolor: PALETTE.green.panelBg,
-              p: { xs: 2, sm: 3 },
-              mb: 2
-            }}
-          >
-            <Typography variant="body1" color="textSecondary">
-              This tool estimates the risk of adverse cardiovascular events (ACE) in cancer
-              patients receiving tyrosine kinase inhibitor (TKI) therapy. It is based on a
-              machine learning–derived algorithm that integrates clinical, imaging, and
-              oncologic features to provide an individualized probability of ACE.
-              The calculator is designed for research and educational use to support risk
-              stratification in this high-risk population.
-            </Typography>
-          </Paper>
+      <Paper
+        elevation={0}
+        sx={{
+          border: "1px solid",
+          borderColor: PALETTE.green.panelBorder,
+          borderRadius: 2,
+          bgcolor: PALETTE.green.panelBg,
+          p: { xs: 2, sm: 3 },
+          mb: 2
+        }}
+      >
+        <Typography variant="body1" color="textSecondary">
+          This tool estimates the risk of adverse cardiovascular events (ACE) in cancer
+          patients receiving tyrosine kinase inhibitor (TKI) therapy. It is based on a
+          machine learning–derived algorithm that integrates clinical, imaging, and
+          oncologic features to provide an individualized probability of ACE.
+          The calculator is designed for research and educational use to support risk
+          stratification in this high-risk population.
+        </Typography>
+      </Paper>
 
           <TKIForm
             onCalculate={handleCalculateTKI}
@@ -307,36 +319,37 @@ function App() {
   const buildLabelMap = { stable: "Stable Build", dev: "Dev Build" };
   const footerLabel = `Version ${APP_CONFIG.version} (${APP_CONFIG.versionDateMonthYear}) • ${buildLabelMap[APP_CONFIG.buildTier] || "Build"}`;
 
-  // ----- Sidebar -----
-  const drawer = (
+  // Common drawer content (used by both desktop & mobile drawers)
+  const DrawerContent = (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      {/* Header */}
+      {/* Header with collapse button */}
       <Box
         sx={{
           bgcolor: PALETTE.neutral.sidebarHeaderBg,
           color: PALETTE.neutral.sidebarHeaderText,
           px: 2,
-          py: 1.5
+          py: 1.25,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between"
         }}
       >
         <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.2, lineHeight: 1.2 }}>
           Risk Calculators
         </Typography>
+        <IconButton
+          aria-label="Close sidebar"
+          size="small"
+          onClick={() => (isDesktop ? setDesktopOpen(false) : setMobileOpen(false))}
+          sx={{ color: "#fff" }}
+        >
+          <ChevronLeftIcon />
+        </IconButton>
       </Box>
 
-      {/* Byline under header (subtle, matches app style) */}
-      <Box
-        sx={{
-          px: 2,
-          py: 1,
-          bgcolor: "#F5F7F8",
-          borderBottom: "1px solid #e0e0e0"
-        }}
-      >
-        <Typography
-          variant="caption"
-          sx={{ color: "text.secondary", fontStyle: "italic" }}
-        >
+      {/* Byline under header */}
+      <Box sx={{ px: 2, py: 1, bgcolor: "#F5F7F8", borderBottom: "1px solid #e0e0e0" }}>
+        <Typography variant="caption" sx={{ color: "text.secondary", fontStyle: "italic" }}>
           Developed by the Kwan Lab at Yale University
         </Typography>
       </Box>
@@ -344,7 +357,10 @@ function App() {
       <List>
         <ListItemButton
           selected={activeCalc === "ici"}
-          onClick={() => setActiveCalc("ici")}
+          onClick={() => {
+            setActiveCalc("ici");
+            if (!isDesktop) setMobileOpen(false);
+          }}
           sx={{
             "&.Mui-selected": { backgroundColor: PALETTE.blue.panelBg },
             "&.Mui-selected:hover": { backgroundColor: PALETTE.blue.selectedHover }
@@ -358,7 +374,10 @@ function App() {
 
         <ListItemButton
           selected={activeCalc === "tki"}
-          onClick={() => setActiveCalc("tki")}
+          onClick={() => {
+            setActiveCalc("tki");
+            if (!isDesktop) setMobileOpen(false);
+          }}
           sx={{
             position: "relative",
             "&.Mui-selected": { backgroundColor: PALETTE.green.panelBg },
@@ -399,26 +418,84 @@ function App() {
     </Box>
   );
 
+  // Floating menu button (mobile: always visible when drawer closed; desktop: visible when collapsed)
+  const showMenuButton =
+    (isDesktop && !desktopOpen) || (!isDesktop && !mobileOpen);
+
+  const handleMenuButtonClick = () =>
+    isDesktop ? setDesktopOpen(true) : setMobileOpen(true);
+
   return (
     <Box sx={{ display: "flex" }}>
-      <Drawer
-        variant="permanent"
-        anchor="left"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
+      {/* DESKTOP drawer (≥ md): collapsible, inline */}
+      {isDesktop && desktopOpen && (
+        <Drawer
+          variant="permanent"
+          anchor="left"
+          sx={{
             width: drawerWidth,
-            boxSizing: "border-box",
-            borderRight: "1px solid #e0e0e0",
-            backgroundColor: "#FFFFFF"
-          }
-        }}
-        open
-      >
-        {drawer}
-      </Drawer>
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+              borderRight: "1px solid #e0e0e0",
+              backgroundColor: "#FFFFFF"
+            }
+          }}
+          open
+        >
+          {DrawerContent}
+        </Drawer>
+      )}
 
+      {/* MOBILE drawer (< md): temporary overlay */}
+      {!isDesktop && (
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          ModalProps={{ keepMounted: true }} // better performance on mobile
+          sx={{
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+              borderRight: "1px solid #e0e0e0",
+              backgroundColor: "#FFFFFF"
+            }
+          }}
+        >
+          {DrawerContent}
+        </Drawer>
+      )}
+
+      {/* Floating menu / hamburger button */}
+      {showMenuButton && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 12,
+            left: 12,
+            zIndex: (t) => t.zIndex.drawer + 1
+          }}
+        >
+          <IconButton
+            aria-label="Open sidebar"
+            onClick={handleMenuButtonClick}
+            size="large"
+            sx={{
+              bgcolor: "#FFFFFF",
+              border: "1px solid #e0e0e0",
+              boxShadow: 1,
+              "&:hover": { bgcolor: "#FAFAFB" }
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Box>
+      )}
+
+      {/* MAIN: centered content */}
       <Box
         component="main"
         sx={{

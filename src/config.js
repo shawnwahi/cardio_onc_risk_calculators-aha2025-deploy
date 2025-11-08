@@ -6,7 +6,7 @@ const APP_CONFIG = {
   versionDateMonthYear: "Nov 2025",
 
   // "stable" | "dev"
-  buildTier: "dev",
+  buildTier: "stable",
 
   // "tki" | "ici"
   defaultCalculator: "tki",
